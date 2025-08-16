@@ -167,6 +167,60 @@
         transform: translateY(-20px) rotate(180deg);
       }
     }
+
+    .video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: -2; /* Ensure it's behind other content */
+      overflow: hidden;
+    }
+
+    .video-container video {
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+    }
+
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .play-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .play-button::after {
+      content: '▶';
+      color: white;
+      font-size: 2rem;
+      margin-left: 5px;
+    }
+
+    .play-button.hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -174,6 +228,13 @@
     <div class="shape"></div>
     <div class="shape"></div>
     <div class="shape"></div>
+  </div>
+
+  <div class="video-container">
+    <video loop playsinline preload="auto">
+      Your browser does not support the video tag.
+    </video>
+    <div class="play-button"></div>
   </div>
 
   <div class="container">

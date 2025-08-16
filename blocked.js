@@ -12,6 +12,51 @@ document.addEventListener('DOMContentLoaded', function() {
     this.style.transform = 'scale(1)';
   });
 
+  // Video functionality with autoplay attempt
+  const video = document.querySelector('.video-container video');
+  const playButton = document.querySelector('.play-button');
+  
+  if (video && playButton) {
+    // List of available videos
+    const videoList = [
+      'videos/video1.mp4',
+      'videos/video2.mp4'
+    ];
+    
+    // Randomly select a video
+    const randomVideo = videoList[Math.floor(Math.random() * videoList.length)];
+    video.src = randomVideo;
+    
+    // Try to enable autoplay with sound
+    video.muted = false;
+    video.volume = 1.0;
+    
+    // Attempt autoplay with sound
+    const playPromise = video.play();
+    
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        // Autoplay succeeded, hide the play button
+        playButton.classList.add('hidden');
+        console.log('Video autoplay with sound succeeded');
+      }).catch((error) => {
+        // Autoplay failed, show play button and handle user interaction
+        console.log('Autoplay failed, showing play button:', error);
+        playButton.classList.remove('hidden');
+        
+        // Handle play button click
+        playButton.addEventListener('click', function() {
+          video.play().then(() => {
+            playButton.classList.add('hidden');
+            console.log('Video started with user interaction');
+          }).catch((playError) => {
+            console.log('Video play failed:', playError);
+          });
+        });
+      });
+    }
+  }
+
   // Update motivational quotes periodically
   const quotes = [
     "The difference between successful people and very successful people is that very successful people say 'no' to almost everything. - Warren Buffett",
