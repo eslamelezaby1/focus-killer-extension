@@ -123,6 +123,56 @@ function setupEventListeners() {
       addCustomSite();
     }
   });
+  
+  // Add debug button
+  addDebugButton();
+}
+
+// Add debug button for testing
+function addDebugButton() {
+  const debugBtn = document.createElement('button');
+  debugBtn.textContent = '🐛 Debug API';
+  debugBtn.style.cssText = `
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 8px;
+    width: 100%;
+  `;
+  
+  debugBtn.addEventListener('click', testBlockingAPI);
+  
+  const addSiteDiv = document.querySelector('.add-site');
+  addSiteDiv.appendChild(debugBtn);
+}
+
+// Test the blocking API
+async function testBlockingAPI() {
+  console.log('Testing blocking API...');
+  
+  try {
+    // Test adding a blocking rule
+    const response = await chrome.runtime.sendMessage({ 
+      action: "testBlockingAPI", 
+      domain: "test.example.com" 
+    });
+    
+    console.log('Test response:', response);
+    
+    if (response && response.success) {
+      alert('✅ API test successful! Check console for details.');
+    } else {
+      alert('❌ API test failed! Check console for details.');
+    }
+    
+  } catch (error) {
+    console.error('Test failed:', error);
+    alert('❌ Test failed! Check console for details.');
+  }
 }
 
 // Add custom site
