@@ -88,6 +88,57 @@
       background: #5a6268;
     }
     
+    .timer-settings {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #e9ecef;
+    }
+    
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .setting-row:last-child {
+      margin-bottom: 12px;
+    }
+    
+    .setting-row label {
+      font-size: 14px;
+      color: #495057;
+      font-weight: 500;
+    }
+    
+    .setting-row input {
+      width: 60px;
+      padding: 4px 8px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    .setting-row input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+    
+    .apply-btn {
+      background: #17a2b8;
+      color: white;
+      width: 100%;
+      margin-top: 8px;
+    }
+    
+    .apply-btn:hover {
+      background: #138496;
+    }
+    
     .focus-stats {
       background: white;
       border-radius: 12px;
@@ -258,9 +309,24 @@
       <div class="timer-time" id="timer-display">25:00</div>
       <div class="timer-status" id="timer-status">Ready to focus</div>
     </div>
+    
+    <!-- Custom Timer Settings -->
+    <div class="timer-settings">
+      <div class="setting-row">
+        <label for="custom-minutes">Minutes:</label>
+        <input type="number" id="custom-minutes" min="1" max="120" value="25" />
+      </div>
+      <div class="setting-row">
+        <label for="custom-seconds">Seconds:</label>
+        <input type="number" id="custom-seconds" min="0" max="59" value="0" />
+      </div>
+      <button class="timer-btn apply-btn" id="apply-btn">Apply</button>
+    </div>
+    
     <div class="timer-controls">
       <button class="timer-btn start-btn" id="start-btn">Start</button>
       <button class="timer-btn stop-btn" id="stop-btn" style="display: none;">Stop</button>
+      <button class="timer-btn cancel-btn" id="cancel-btn" style="display: none;">Cancel</button>
       <button class="timer-btn reset-btn" id="reset-btn">Reset</button>
     </div>
   </div>

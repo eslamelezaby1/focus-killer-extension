@@ -12,6 +12,7 @@ let blockedSites = [];
 let timerInterval = null;
 let focusSessionActive = false;
 let currentTime = 25 * 60; // 25 minutes in seconds
+let defaultTime = 25 * 60; // Store default time
 let totalTime = 0;
 let sessionCount = 0;
 
@@ -19,6 +20,7 @@ let sessionCount = 0;
 document.addEventListener('DOMContentLoaded', async () => {
   await loadBlockedSites();
   await loadFocusStats();
+  await loadTimerSettings();
   renderSitesList();
   setupEventListeners();
   updateTimerDisplay();
@@ -56,6 +58,49 @@ async function loadFocusStats() {
   }
 }
 
+// Load timer settings from storage
+async function loadTimerSettings() {
+  try {
+    const result = await chrome.storage.local.get(['timerSettings']);
+    const settings = result.timerSettings || {};
+    
+    // Set custom time if available, otherwise use default
+    if (settings.customTime) {
+      currentTime = settings.customTime;
+      defaultTime = settings.customTime;
+    } else {
+      currentTime = 25 * 60;
+      defaultTime = 25 * 60;
+    }
+    
+    // Update input fields
+    const minutesInput = document.getElementById('custom-minutes');
+    const secondsInput = document.getElementById('custom-seconds');
+    
+    if (minutesInput && secondsInput) {
+      minutesInput.value = Math.floor(currentTime / 60);
+      secondsInput.value = currentTime % 60;
+    }
+    
+  } catch (error) {
+    console.error('Error loading timer settings:', error);
+  }
+}
+
+// Save timer settings to storage
+async function saveTimerSettings() {
+  try {
+    await chrome.storage.local.set({ 
+      timerSettings: { 
+        customTime: currentTime,
+        lastUpdated: Date.now()
+      } 
+    });
+  } catch (error) {
+    console.error('Error saving timer settings:', error);
+  }
+}
+
 // Save focus statistics to storage
 async function saveFocusStats() {
   try {
@@ -89,7 +134,7 @@ function startTimer() {
   if (focusSessionActive) return;
   
   focusSessionActive = true;
-  currentTime = 25 * 60; // Reset to 25 minutes
+  currentTime = defaultTime; // Reset to custom time
   
   // Send message to background to activate focus mode
   chrome.runtime.sendMessage({ action: "activateFocusMode" });
@@ -128,9 +173,59 @@ function stopTimer() {
 
 function resetTimer() {
   stopTimer();
-  currentTime = 25 * 60;
+  currentTime = defaultTime;
   updateTimerDisplay();
   document.getElementById('timer-status').textContent = 'Ready to focus';
+}
+
+// Apply custom timer settings
+function applyCustomTimer() {
+  const minutesInput = document.getElementById('custom-minutes');
+  const secondsInput = document.getElementById('custom-seconds');
+  
+  if (!minutesInput || !secondsInput) return;
+  
+  const minutes = parseInt(minutesInput.value) || 0;
+  const seconds = parseInt(secondsInput.value) || 0;
+  
+  // Validate input
+  if (minutes < 1 || minutes > 120) {
+    alert('Minutes must be between 1 and 120');
+    return;
+  }
+  
+  if (seconds < 0 || seconds > 59) {
+    alert('Seconds must be between 0 and 59');
+    return;
+  }
+  
+  // Calculate total time in seconds
+  const newTime = (minutes * 60) + seconds;
+  
+  if (newTime < 60) {
+    alert('Total time must be at least 1 minute');
+    return;
+  }
+  
+  // Update timer
+  currentTime = newTime;
+  defaultTime = newTime;
+  
+  // Save settings
+  saveTimerSettings();
+  
+  // Update display
+  updateTimerDisplay();
+  
+  // Show confirmation
+  document.getElementById('timer-status').textContent = `Timer set to ${minutes}:${seconds.toString().padStart(2, '0')}`;
+  
+  // Reset status after 3 seconds
+  setTimeout(() => {
+    if (!focusSessionActive) {
+      document.getElementById('timer-status').textContent = 'Ready to focus';
+    }
+  }, 3000);
 }
 
 function completeFocusSession() {
@@ -138,7 +233,7 @@ function completeFocusSession() {
   
   // Update statistics
   sessionCount++;
-  totalTime += 25 * 60; // Add 25 minutes
+  totalTime += defaultTime; // Add custom time instead of fixed 25 minutes
   updateStatsDisplay();
   saveFocusStats();
   
@@ -254,6 +349,7 @@ function setupEventListeners() {
   const startBtn = document.getElementById('start-btn');
   const stopBtn = document.getElementById('stop-btn');
   const resetBtn = document.getElementById('reset-btn');
+  const applyBtn = document.getElementById('apply-btn');
   
   addSiteBtn.addEventListener('click', addCustomSite);
   newSiteInput.addEventListener('keypress', (e) => {
@@ -265,6 +361,7 @@ function setupEventListeners() {
   startBtn.addEventListener('click', startTimer);
   stopBtn.addEventListener('click', stopTimer);
   resetBtn.addEventListener('click', resetTimer);
+  applyBtn.addEventListener('click', applyCustomTimer);
   
   // Add debug button
   addDebugButton();

@@ -5,6 +5,7 @@ A browser extension designed to help you stay focused and productive by blocking
 ## Features
 
 - **Website Blocking**: Block distracting websites during focus sessions
+- **Custom Timer**: Set your own focus duration (1-120 minutes)
 - **Pomodoro Timer**: Built-in 25-minute focus timer with session tracking
 - **Focus Mode**: Automatic blocking activation when timer starts
 - **Daily Statistics**: Track your daily focus sessions and total time
@@ -31,13 +32,14 @@ A browser extension designed to help you stay focused and productive by blocking
 
 ### Timer & Focus Sessions
 1. **Click the extension icon** in your browser toolbar to open the popup
-2. **Set your focus time** - Default is 25 minutes (Pomodoro technique)
-3. **Click "Start"** to begin a focus session
+2. **Set your focus time** - Use the custom timer inputs (1-120 minutes + seconds)
+3. **Click "Apply"** to save your custom timer settings
+4. **Click "Start"** to begin a focus session
    - All blocked sites will be automatically blocked
-   - Timer will count down from 25:00
-4. **Stay focused** - Blocked sites will show a motivational blocked page
-5. **Session completion** - When timer ends, focus mode automatically deactivates
-6. **Track progress** - View daily statistics in the popup
+   - Timer will count down from your custom duration
+5. **Stay focused** - Blocked sites will show a motivational blocked page
+6. **Session completion** - When timer ends, focus mode automatically deactivates
+7. **Track progress** - View daily statistics in the popup
 
 ### Website Management
 1. **Configure blocked sites** by adding URLs you want to block
@@ -63,12 +65,15 @@ FocusKiller/
 
 ## Timer Features
 
-- **25-minute Pomodoro sessions** for optimal focus
+- **Custom timer duration** from 1 minute to 2 hours (120 minutes)
+- **25-minute Pomodoro sessions** as default option
+- **Minutes and seconds input** for precise timing
 - **Automatic focus mode activation** when timer starts
 - **Session completion tracking** with daily statistics
 - **Real-time countdown** displayed on blocked pages
 - **Automatic deactivation** when timer ends
 - **Session pause/resume** functionality
+- **Settings persistence** - your custom timer is remembered
 
 ## Focus Mode
 

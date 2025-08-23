@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Update focus information from storage
 async function updateFocusInfo() {
   try {
-    const result = await chrome.storage.local.get(['focusModeActive', 'focusStats']);
+    const result = await chrome.storage.local.get(['focusModeActive', 'focusStats', 'timerSettings']);
     const focusModeActive = result.focusModeActive || false;
     
     const focusTimeElement = document.getElementById('focus-time');
@@ -57,8 +57,9 @@ async function updateFocusInfo() {
       const today = new Date().toDateString();
       const todayStats = stats[today] || { sessions: 0, totalTime: 0 };
       
-      // Calculate remaining time (assuming 25-minute sessions)
-      const sessionDuration = 25 * 60; // 25 minutes in seconds
+      // Get custom timer duration
+      const timerSettings = result.timerSettings || {};
+      const sessionDuration = timerSettings.customTime || 25 * 60; // Use custom time or default to 25 minutes
       const completedSessions = todayStats.sessions || 0;
       const totalTimeSpent = todayStats.totalTime || 0;
       
