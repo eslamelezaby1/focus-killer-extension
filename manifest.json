@@ -1,25 +1,37 @@
 {
   "manifest_version": 3,
-  "name": "Focus Killer - Hide Distractions",
+  "name": "FocusKiller",
   "version": "1.0",
-  "description": "Block distracting websites individually with one click to stay focused.",
-  "permissions": ["storage", "declarativeNetRequest", "declarativeNetRequestWithHostAccess", "alarms", "notifications"],
-  "host_permissions": ["<all_urls>"],
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
-  },
+  "description": "Block distracting websites to help you stay focused",
+  
+  "permissions": [
+    "storage",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  
   "background": {
     "service_worker": "background.js"
   },
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "FocusKiller - Block Distracting Sites"
+  },
+  
+  "options_page": "options.html",
+  
+  "declarative_net_request": {
+    "rule_resources": []
+  },
+  
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
-  },
-  "options_page": "options.html"
+  }
 }

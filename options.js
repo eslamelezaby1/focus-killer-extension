@@ -9,10 +9,7 @@ const defaultSites = [
 ];
 
 let blockedSites = [];
-let timerSettings = {
-  defaultFocusTime: 25,
-  defaultBreakTime: 5,
-  blockDuringBreak: false,
+let generalSettings = {
   soundNotifications: true
 };
 
@@ -28,36 +25,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Load all settings from storage
 async function loadSettings() {
   try {
-    const result = await chrome.storage.sync.get(['timerSettings']);
-    if (result.timerSettings) {
-      timerSettings = { ...timerSettings, ...result.timerSettings };
+    const result = await chrome.storage.sync.get(['generalSettings']);
+    if (result.generalSettings) {
+      generalSettings = { ...generalSettings, ...result.generalSettings };
     }
     
     // Update UI with loaded settings
-    document.getElementById('default-focus-time').value = timerSettings.defaultFocusTime;
-    document.getElementById('default-break-time').value = timerSettings.defaultBreakTime;
-    document.getElementById('block-during-break').classList.toggle('active', timerSettings.blockDuringBreak);
-    document.getElementById('sound-notifications').classList.toggle('active', timerSettings.soundNotifications);
+    document.getElementById('sound-notifications').classList.toggle('active', generalSettings.soundNotifications);
     
   } catch (error) {
     console.error('Error loading settings:', error);
   }
 }
 
-// Save timer settings to storage
-async function saveTimerSettings() {
+// Save general settings to storage
+async function saveSettings() {
   try {
     // Get values from UI
-    timerSettings.defaultFocusTime = parseInt(document.getElementById('default-focus-time').value);
-    timerSettings.defaultBreakTime = parseInt(document.getElementById('default-break-time').value);
-    timerSettings.blockDuringBreak = document.getElementById('block-during-break').classList.contains('active');
-    timerSettings.soundNotifications = document.getElementById('sound-notifications').classList.contains('active');
+    generalSettings.soundNotifications = document.getElementById('sound-notifications').classList.contains('active');
     
     // Save to storage
-    await chrome.storage.sync.set({ timerSettings });
-    
-    // Also save to local storage for popup access
-    await chrome.storage.local.set({ timerSettings });
+    await chrome.storage.sync.set({ generalSettings });
     
     showSaveStatus('Settings saved successfully!', 'success');
     
@@ -97,7 +85,6 @@ async function loadFocusStats() {
     const stats = result.focusStats || {};
     
     // Calculate totals
-    let totalSessions = 0;
     let totalTime = 0;
     let currentStreak = 0;
     let bestStreak = 0;
@@ -111,7 +98,7 @@ async function loadFocusStats() {
     
     for (let i = 0; i < 30; i++) { // Check last 30 days
       const dateStr = currentDate.toDateString();
-      if (stats[dateStr] && stats[dateStr].sessions > 0) {
+      if (stats[dateStr] && stats[dateStr].totalTime > 0) {
         streakCount++;
         if (streakCount > bestStreak) {
           bestStreak = streakCount;
@@ -126,12 +113,10 @@ async function loadFocusStats() {
     
     // Calculate totals
     Object.values(stats).forEach(dayStats => {
-      totalSessions += dayStats.sessions || 0;
       totalTime += dayStats.totalTime || 0;
     });
     
     // Update UI
-    document.getElementById('total-sessions').textContent = totalSessions;
     document.getElementById('total-time').textContent = `${Math.floor(totalTime / 3600)}h ${Math.floor((totalTime % 3600) / 60)}m`;
     document.getElementById('current-streak').textContent = currentStreak;
     document.getElementById('best-streak').textContent = bestStreak;
@@ -327,14 +312,10 @@ function showSaveStatus(message, type) {
 
 // Setup event listeners
 function setupEventListeners() {
-  // Timer settings
-  document.getElementById('save-timer-settings').addEventListener('click', saveTimerSettings);
+  // General settings
+  document.getElementById('save-settings').addEventListener('click', saveSettings);
   
   // Toggle switches
-  document.getElementById('block-during-break').addEventListener('click', function() {
-    this.classList.toggle('active');
-  });
-  
   document.getElementById('sound-notifications').addEventListener('click', function() {
     this.classList.toggle('active');
   });

@@ -17,20 +17,8 @@
     
     .container {
       text-align: center;
-      max-width: 600px;
+      max-width: 500px;
       padding: 40px 20px;
-    }
-    
-    .icon {
-      font-size: 4rem;
-      margin-bottom: 20px;
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
     }
     
     h1 {
@@ -45,103 +33,6 @@
       margin-bottom: 30px;
       opacity: 0.9;
       line-height: 1.6;
-    }
-    
-    .timer-display {
-      background: rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 30px;
-      margin: 30px 0;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    
-    .timer-label {
-      font-size: 1rem;
-      margin-bottom: 15px;
-      opacity: 0.8;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .timer-time {
-      font-size: 3rem;
-      font-weight: 700;
-      font-family: 'Courier New', monospace;
-      margin-bottom: 15px;
-    }
-    
-    .timer-status {
-      font-size: 1.1rem;
-      opacity: 0.9;
-    }
-    
-    .motivational-quote {
-      background: rgba(255,255,255,0.1);
-      border-radius: 15px;
-      padding: 25px;
-      margin: 30px 0;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.2);
-      font-style: italic;
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-    
-    .quote-author {
-      margin-top: 15px;
-      font-size: 0.9rem;
-      opacity: 0.7;
-    }
-    
-    .progress-bar {
-      width: 100%;
-      height: 8px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 4px;
-      margin: 20px 0;
-      overflow: hidden;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #4CAF50, #8BC34A);
-      transition: width 0.3s ease;
-      border-radius: 4px;
-    }
-    
-    .tips {
-      background: rgba(255,255,255,0.1);
-      border-radius: 15px;
-      padding: 25px;
-      margin: 30px 0;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    
-    .tips h3 {
-      margin-bottom: 15px;
-      font-size: 1.3rem;
-    }
-    
-    .tips ul {
-      text-align: left;
-      list-style: none;
-      padding: 0;
-    }
-    
-    .tips li {
-      margin: 10px 0;
-      padding-left: 25px;
-      position: relative;
-    }
-    
-    .tips li:before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      color: #4CAF50;
-      font-weight: bold;
     }
     
     .extension-link {
@@ -179,8 +70,8 @@
       color: white;
     }
     
-    .mode-break {
-      background: rgba(23, 162, 184, 0.8);
+    .mode-idle {
+      background: rgba(34, 34, 34, 0.8);
       color: white;
     }
     
@@ -192,21 +83,11 @@
       h1 {
         font-size: 2rem;
       }
-      
-      .timer-time {
-        font-size: 2.5rem;
-      }
-      
-      .timer-display, .motivational-quote, .tips {
-        padding: 20px;
-      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="icon">🎯</div>
-    
     <div class="mode-indicator" id="mode-indicator">FOCUS</div>
     
     <h1>Stay Focused!</h1>
@@ -214,34 +95,7 @@
       This website is currently blocked to help you maintain focus during your work session.
     </div>
     
-    <div class="timer-display">
-      <div class="timer-label">Time Remaining</div>
-      <div class="timer-time" id="timer-display">25:00</div>
-      <div class="timer-status" id="timer-status">Focus session in progress</div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
-    </div>
-    
-    <div class="motivational-quote">
-      "The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle."
-      <div class="quote-author">- Steve Jobs</div>
-    </div>
-    
-    <div class="tips">
-      <h3>💡 Focus Tips</h3>
-      <ul>
-        <li>Take deep breaths and center yourself</li>
-        <li>Break your work into smaller, manageable tasks</li>
-        <li>Use the Pomodoro technique: 25 minutes work, 5 minutes break</li>
-        <li>Eliminate other distractions in your environment</li>
-        <li>Stay hydrated and take care of your posture</li>
-      </ul>
-    </div>
-    
-    <a href="#" class="extension-link" id="extension-link">
-      Open FocusKiller Extension
-    </a>
+
   </div>
   
   <script src="blocked.js"></script>

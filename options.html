@@ -55,21 +55,6 @@
       font-weight: 500;
     }
     
-    .setting-input {
-      padding: 8px 12px;
-      border: 1px solid #ced4da;
-      border-radius: 6px;
-      font-size: 16px;
-      width: 100px;
-      text-align: center;
-    }
-    
-    .setting-input:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-    }
-    
     .toggle-switch {
       position: relative;
       width: 50px;
@@ -268,38 +253,23 @@
 <body>
   <h1>FocusKiller Options</h1>
   
-  <!-- Timer Settings -->
+  <!-- General Settings -->
   <div class="section">
-    <div class="section-title">⏰ Timer Settings</div>
+    <div class="section-title">General Settings</div>
     
     <div class="setting-group">
-      <div class="setting-row">
-        <label class="setting-label">Default Focus Duration (minutes)</label>
-        <input type="number" id="default-focus-time" class="setting-input" min="1" max="120" value="25">
-      </div>
-      
-      <div class="setting-row">
-        <label class="setting-label">Default Break Duration (minutes)</label>
-        <input type="number" id="default-break-time" class="setting-input" min="1" max="60" value="5">
-      </div>
-      
-      <div class="setting-row">
-        <label class="setting-label">Block sites during break</label>
-        <div class="toggle-switch" id="block-during-break"></div>
-      </div>
-      
       <div class="setting-row">
         <label class="setting-label">Sound notifications</label>
         <div class="toggle-switch" id="sound-notifications"></div>
       </div>
     </div>
     
-    <button class="btn btn-success" id="save-timer-settings">Save Timer Settings</button>
+    <button class="btn btn-success" id="save-settings">Save Settings</button>
   </div>
   
   <!-- Blocked Websites -->
   <div class="section">
-    <div class="section-title">🚫 Blocked Websites</div>
+    <div class="section-title">Blocked Websites</div>
     
     <div id="sites-list">
       <!-- Sites will be populated by JavaScript -->
@@ -319,13 +289,9 @@
   
   <!-- Focus Statistics -->
   <div class="section">
-    <div class="section-title">📊 Focus Statistics</div>
+    <div class="section-title">Focus Statistics</div>
     
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-value" id="total-sessions">0</div>
-        <div class="stat-label">Total Sessions</div>
-      </div>
       <div class="stat-card">
         <div class="stat-value" id="total-time">0h</div>
         <div class="stat-label">Total Focus Time</div>

@@ -1,184 +1,164 @@
-# FocusKiller - Browser Extension
+# FocusKiller
 
-A browser extension designed to help you stay focused and productive by blocking distracting websites during your focus sessions.
+A simple browser extension that helps you stay focused by blocking distracting websites.
 
-## 🚀 Features
+## What It Does
 
-### Core Functionality
-- **Website Blocking**: Block distracting websites individually with one click
-- **Focus Timer**: Customizable Pomodoro-style timer with focus and break sessions
-- **Smart Notifications**: Browser notifications and sounds when sessions end
-- **Session Tracking**: Monitor your daily focus progress and build streaks
+FocusKiller blocks access to distracting websites when you enable focus mode, helping you maintain concentration on your work.
 
-### Timer Features
-- **Customizable Focus Duration**: Set focus time from 1-120 minutes (default: 25 minutes)
-- **Break Timer**: Automatic 5-minute breaks after focus sessions (customizable)
-- **Pause/Resume**: Pause and resume your focus sessions at any time
-- **Visual Progress**: Progress bar showing session completion
-- **Badge Display**: Extension badge shows countdown and current mode
+## Features
 
-### Break Mode Options
-- **Configurable Blocking**: Choose whether to block sites during breaks
-- **Flexible Duration**: Set break time from 1-60 minutes
-- **Smart Transitions**: Automatic switching between focus and break modes
+### 🎯 **Simple Focus Mode**
+- **One-Click Toggle** - Enable/disable website blocking with a single button
+- **Visual Feedback** - Clear indication of current focus mode status
+- **Instant Activation** - Start blocking distractions immediately
 
-### Statistics & Analytics
-- **Daily Tracking**: Monitor sessions completed and total focus time
-- **Streak Building**: Track consecutive days of focus sessions
-- **Progress Visualization**: See your productivity trends over time
+### 🚫 **Website Blocking**
+- **Pre-configured Sites** - Common distracting sites are included by default
+- **Custom Sites** - Add your own distracting websites to block
+- **Smart Blocking** - Sites are only blocked when focus mode is active
 
-### Website Management
-- **Pre-built List**: Common distracting sites pre-configured
-- **Custom Sites**: Add your own distracting websites
-- **Export/Import**: Backup and restore your blocked sites list
-- **One-Click Toggle**: Easily enable/disable blocking for specific sites
+### ⚙️ **Easy Management**
+- **Site Toggle** - Enable/disable blocking for individual sites
+- **Export/Import** - Backup and restore your blocked sites list
+- **Simple Interface** - Clean, intuitive popup and options pages
 
-## 📱 User Interface
+### 📊 **Progress Tracking**
+- **Daily Focus Time** - Track how long you stay focused each day
+- **Streak Building** - Build consecutive days of focus
+- **Statistics Dashboard** - View your focus progress over time
 
-### Popup Interface
-- **Timer Display**: Large, clear countdown timer
-- **Mode Indicator**: Shows current state (IDLE, FOCUS, BREAK, PAUSED)
-- **Progress Bar**: Visual representation of session progress
-- **Quick Controls**: Start, pause, resume, stop, and cancel buttons
-- **Settings Panel**: Adjust focus time, break time, and other preferences
+## Installation
 
-### Options Page
-- **Timer Settings**: Configure default focus and break durations
-- **Blocking Preferences**: Choose whether to block sites during breaks
-- **Notification Settings**: Enable/disable sound notifications
-- **Site Management**: Add, remove, and organize blocked websites
-- **Statistics Dashboard**: View your focus productivity metrics
+1. Download the extension files
+2. Open Chrome and go to `chrome://extensions/`
+3. Enable "Developer mode" in the top right
+4. Click "Load unpacked" and select the extension folder
+5. The FocusKiller icon will appear in your toolbar
 
-## 🛠️ Technical Details
+## How to Use
 
-### Architecture
-- **Manifest V3**: Built with the latest Chrome extension standards
-- **Service Worker**: Background script handles timer logic and site blocking
-- **Storage API**: Uses chrome.storage.sync for settings and chrome.storage.local for data
-- **Alarms API**: Reliable timer handling even when popup is closed
-- **Declarative Net Request**: Efficient website blocking without performance impact
+### Basic Usage
+1. **Click the FocusKiller icon** in your browser toolbar
+2. **Click "Enable Focus Mode"** to start blocking distracting sites
+3. **Work distraction-free** - blocked sites will redirect to a focus page
+4. **Click "Disable Focus Mode"** when you're done
 
-### Browser Compatibility
-- Chrome 88+
-- Edge 88+
-- Other Chromium-based browsers
+### Managing Blocked Sites
+1. **Open the popup** and scroll to see your blocked sites
+2. **Toggle individual sites** on/off using the switches
+3. **Add custom sites** by typing a domain and clicking "Add Site"
+4. **Access options** by right-clicking the extension icon
 
-## 📖 Usage Guide
+### Advanced Settings
+1. **Right-click the extension icon** and select "Options"
+2. **Customize settings** like sound notifications
+3. **Export your site list** for backup
+4. **Import site lists** from other devices
 
-### Getting Started
-1. **Install the Extension**: Load the extension from the Chrome Web Store or developer mode
-2. **Configure Settings**: Right-click the extension icon and select "Options"
-3. **Set Timer Preferences**: Choose your preferred focus and break durations
-4. **Add Distracting Sites**: Select from pre-built list or add custom domains
-5. **Start Your First Session**: Click the extension icon and press "Start Focus"
+## Default Blocked Sites
 
-### Timer Controls
-- **Start Focus**: Begin a focus session with the configured duration
-- **Pause**: Temporarily pause the timer (sites remain blocked)
-- **Resume**: Continue a paused session from where you left off
-- **Stop**: End the current session and return to idle mode
-- **Cancel**: Abort the session and reset the timer
-- **Reset**: Return to the default timer settings
+The extension comes with these common distracting sites pre-configured:
+- Facebook
+- YouTube  
+- Twitter
+- Instagram
+- TikTok
+- Reddit
 
-### Break Mode
-- **Automatic Transition**: Breaks start automatically after focus sessions
-- **Configurable Blocking**: Choose whether distracting sites remain blocked
-- **Break Duration**: Set custom break lengths (1-60 minutes)
-- **Smart Notifications**: Get notified when break time is complete
+You can easily add or remove any of these sites.
 
-### Website Management
-- **Toggle Blocking**: Click the toggle switch next to any site
-- **Add Custom Sites**: Enter domain names (e.g., "facebook.com")
-- **Export List**: Download your blocked sites as a JSON file
-- **Import List**: Restore sites from a previously exported file
+## How It Works
 
-## ⚙️ Configuration
+### Focus Mode
+- When **enabled**: All blocked websites redirect to a "Stay Focused" page
+- When **disabled**: All websites are accessible normally
+- **No timer needed** - simply toggle on/off as needed
 
-### Timer Settings
-- **Focus Duration**: 1-120 minutes (default: 25)
-- **Break Duration**: 1-60 minutes (default: 5)
-- **Block During Break**: Enable/disable site blocking during breaks
-- **Sound Notifications**: Enable/disable audio alerts
+### Website Blocking
+- Uses Chrome's `declarativeNetRequest` API for efficient blocking
+- Creates dynamic rules that can be easily modified
+- Works across all browser tabs and windows
 
-### Blocking Preferences
-- **Individual Control**: Block/unblock sites independently
-- **Persistent Storage**: Settings saved across browser sessions
-- **Real-time Updates**: Changes apply immediately without restart
+### Data Storage
+- **Settings**: Stored in `chrome.storage.sync` (syncs across devices)
+- **Blocked Sites**: Stored in `chrome.storage.local`
+- **Focus Statistics**: Tracks daily focus time and streaks
 
-## 📊 Statistics & Progress
+## Technical Details
 
-### Daily Metrics
-- **Sessions Completed**: Number of focus sessions finished today
-- **Total Focus Time**: Cumulative minutes of focused work
-- **Current Streak**: Consecutive days with completed sessions
-- **Best Streak**: Longest streak of focus days
+- **Manifest V3** - Built with the latest Chrome extension standards
+- **Service Worker** - Background script manages blocking rules
+- **Storage APIs** - Uses Chrome's built-in storage for data persistence
+- **Declarative Rules** - Efficient website blocking without performance impact
 
-### Progress Tracking
-- **Automatic Recording**: Statistics update automatically
-- **Persistent Storage**: Data saved locally for privacy
-- **Reset Option**: Clear statistics if desired
-- **Export Capability**: Backup your progress data
+## Privacy
 
-## 🔧 Development
+- **No data collection** - All data stays on your device
+- **No tracking** - Extension doesn't monitor your browsing
+- **Local storage** - Your blocked sites list is private
+- **Open source** - Code is transparent and auditable
+
+## Troubleshooting
+
+### Focus Mode Not Working
+- Check that the extension has permission to access all URLs
+- Try disabling and re-enabling the extension
+- Verify that sites are added to your blocked list
+
+### Sites Still Accessible
+- Ensure focus mode is enabled (button should be red)
+- Check that the site domain is in your blocked list
+- Try refreshing the page or opening in a new tab
+
+### Extension Not Loading
+- Check Chrome's extension page for error messages
+- Try reloading the extension
+- Ensure you're using a compatible Chrome version
+
+## Development
 
 ### Project Structure
 ```
 FocusKiller/
 ├── manifest.json          # Extension configuration
-├── popup.html            # Main timer interface
-├── popup.js              # Timer logic and UI interactions
-├── background.js         # Service worker and background tasks
-├── options.html          # Settings and configuration page
-├── options.js            # Options page functionality
-├── blocked.html          # Blocked site redirect page
-├── icons/                # Extension icons
-└── README.md             # This documentation
+├── popup.html            # Main popup interface
+├── popup.js              # Popup functionality
+├── background.js          # Background service worker
+├── options.html           # Options page
+├── options.js             # Options functionality
+├── blocked.html           # Blocked page shown to users
+├── blocked.js             # Blocked page logic
+└── icons/                 # Extension icons
 ```
 
-### Key Technologies
-- **HTML5**: Modern semantic markup
-- **CSS3**: Responsive design with CSS Grid and Flexbox
-- **JavaScript ES6+**: Modern JavaScript with async/await
-- **Chrome Extensions API**: Manifest V3 and related APIs
-- **Local Storage**: Chrome storage APIs for data persistence
+### Key Components
+- **Popup**: Main user interface for controlling focus mode
+- **Background**: Manages website blocking rules and extension state
+- **Options**: Settings page for customization
+- **Blocked Page**: Redirect destination for blocked websites
 
-### Building & Testing
-1. **Load Extension**: Enable developer mode in Chrome
-2. **Load Unpacked**: Select the FocusKiller directory
-3. **Test Functionality**: Use the popup and options pages
-4. **Debug**: Check console logs in background and popup contexts
+### Building
+1. Make your changes to the source files
+2. Load the extension in Chrome's developer mode
+3. Test your changes
+4. Package for distribution when ready
 
-## 🤝 Contributing
+## Contributing
 
-### Development Setup
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+Contributions are welcome! Please feel free to submit issues, feature requests, or pull requests.
 
-### Code Style
-- Use modern JavaScript (ES6+)
-- Follow Chrome extension best practices
-- Maintain consistent formatting
-- Add comments for complex logic
-
-## 📄 License
+## License
 
 This project is open source and available under the MIT License.
 
-## 🆘 Support
+## Support
 
-### Common Issues
-- **Sites Not Blocking**: Check if the domain is correctly added
-- **Timer Not Working**: Ensure the extension has necessary permissions
-- **Notifications Not Showing**: Grant notification permissions when prompted
-
-### Getting Help
-- Check the browser console for error messages
-- Verify extension permissions in Chrome settings
-- Ensure the extension is properly loaded in developer mode
+If you encounter any issues or have questions:
+1. Check the troubleshooting section above
+2. Review the code for potential issues
+3. Open an issue on the project repository
 
 ---
 
-**FocusKiller** - Stay focused, stay productive! 🎯
+**FocusKiller** - Simple, effective website blocking for better focus and productivity.
