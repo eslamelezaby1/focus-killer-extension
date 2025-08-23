@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FocusKiller Options</title>
+  <style>
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      max-width: 800px; 
+      margin: 0 auto; 
+      padding: 20px;
+      background: #f8f9fa;
+    }
+    
+    h1 { 
+      color: #2c3e50; 
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 1px solid #e9ecef;
+    }
+    
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e9ecef;
+      padding-bottom: 12px;
+    }
+    
+    .setting-group {
+      margin-bottom: 20px;
+    }
+    
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .setting-label {
+      font-size: 16px;
+      color: #495057;
+      font-weight: 500;
+    }
+    
+    .setting-input {
+      padding: 8px 12px;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      font-size: 16px;
+      width: 100px;
+      text-align: center;
+    }
+    
+    .setting-input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+    
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+      background: #ccc;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .toggle-switch.active {
+      background: #28a745;
+    }
+    
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    
+    .toggle-switch.active::after {
+      transform: translateX(24px);
+    }
+    
+    .site-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      margin: 8px 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border: 1px solid #e9ecef;
+    }
+    
+    .site-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .site-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: white;
+    }
+    
+    .facebook { background: #1877f2; }
+    .youtube { background: #ff0000; }
+    .twitter { background: #1da1f2; }
+    .instagram { background: #e4405f; }
+    .tiktok { background: #000000; }
+    .reddit { background: #ff4500; }
+    .custom { background: #6c757d; }
+    
+    .site-name {
+      font-weight: 500;
+      color: #495057;
+      font-size: 16px;
+    }
+    
+    .add-site {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .add-site input {
+      width: 300px;
+      padding: 12px 16px;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-right: 12px;
+    }
+    
+    .add-site input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+    
+    .btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .btn:hover {
+      background: #0056b3;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    
+    .btn-success {
+      background: #28a745;
+    }
+    
+    .btn-success:hover {
+      background: #218838;
+    }
+    
+    .btn-danger {
+      background: #dc3545;
+    }
+    
+    .btn-danger:hover {
+      background: #c82333;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    
+    .stat-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid #e9ecef;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #28a745;
+      margin-bottom: 8px;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: #6c757d;
+    }
+    
+    .export-import {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    
+    .export-import button {
+      flex: 1;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .save-status {
+      text-align: center;
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    
+    .save-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .save-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+  <h1>FocusKiller Options</h1>
+  
+  <!-- Timer Settings -->
+  <div class="section">
+    <div class="section-title">⏰ Timer Settings</div>
+    
+    <div class="setting-group">
+      <div class="setting-row">
+        <label class="setting-label">Default Focus Duration (minutes)</label>
+        <input type="number" id="default-focus-time" class="setting-input" min="1" max="120" value="25">
+      </div>
+      
+      <div class="setting-row">
+        <label class="setting-label">Default Break Duration (minutes)</label>
+        <input type="number" id="default-break-time" class="setting-input" min="1" max="60" value="5">
+      </div>
+      
+      <div class="setting-row">
+        <label class="setting-label">Block sites during break</label>
+        <div class="toggle-switch" id="block-during-break"></div>
+      </div>
+      
+      <div class="setting-row">
+        <label class="setting-label">Sound notifications</label>
+        <div class="toggle-switch" id="sound-notifications"></div>
+      </div>
+    </div>
+    
+    <button class="btn btn-success" id="save-timer-settings">Save Timer Settings</button>
+  </div>
+  
+  <!-- Blocked Websites -->
+  <div class="section">
+    <div class="section-title">🚫 Blocked Websites</div>
+    
+    <div id="sites-list">
+      <!-- Sites will be populated by JavaScript -->
+    </div>
+    
+    <div class="add-site">
+      <input type="text" id="new-site" placeholder="Enter site domain (e.g., facebook.com)">
+      <button class="btn" id="add-site-btn">Add Site</button>
+    </div>
+    
+    <div class="export-import">
+      <button class="btn btn-secondary" id="export-sites">Export List</button>
+      <button class="btn btn-secondary" id="import-sites">Import List</button>
+      <input type="file" id="import-file" class="hidden" accept=".json">
+    </div>
+  </div>
+  
+  <!-- Focus Statistics -->
+  <div class="section">
+    <div class="section-title">📊 Focus Statistics</div>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="total-sessions">0</div>
+        <div class="stat-label">Total Sessions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="total-time">0h</div>
+        <div class="stat-label">Total Focus Time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="current-streak">0</div>
+        <div class="stat-label">Current Streak</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="best-streak">0</div>
+        <div class="stat-label">Best Streak</div>
+      </div>
+    </div>
+    
+    <button class="btn btn-danger" id="reset-stats">Reset Statistics</button>
+  </div>
+  
+  <div id="save-status" class="save-status hidden"></div>
+  
+  <script src="options.js"></script>
+</body>
+</html>

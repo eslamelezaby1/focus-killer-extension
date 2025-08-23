@@ -33,10 +33,19 @@
     }
     
     .timer-time {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 700;
       color: #28a745;
       margin-bottom: 8px;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .timer-time.break {
+      color: #17a2b8;
+    }
+    
+    .timer-time.focus {
+      color: #dc3545;
     }
     
     .timer-status {
@@ -49,16 +58,18 @@
       display: flex;
       gap: 8px;
       justify-content: center;
+      flex-wrap: wrap;
     }
     
     .timer-btn {
-      padding: 8px 16px;
+      padding: 10px 16px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
       font-weight: 500;
       transition: all 0.2s;
+      min-width: 70px;
     }
     
     .start-btn {
@@ -68,6 +79,24 @@
     
     .start-btn:hover {
       background: #218838;
+    }
+    
+    .pause-btn {
+      background: #ffc107;
+      color: #212529;
+    }
+    
+    .pause-btn:hover {
+      background: #e0a800;
+    }
+    
+    .resume-btn {
+      background: #17a2b8;
+      color: white;
+    }
+    
+    .resume-btn:hover {
+      background: #138496;
     }
     
     .stop-btn {
@@ -86,6 +115,15 @@
     
     .reset-btn:hover {
       background: #5a6268;
+    }
+    
+    .cancel-btn {
+      background: #fd7e14;
+      color: white;
+    }
+    
+    .cancel-btn:hover {
+      background: #e55a00;
     }
     
     .timer-settings {
@@ -137,6 +175,70 @@
     
     .apply-btn:hover {
       background: #138496;
+    }
+    
+    .countdown-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      animation: slideInRight 0.3s ease-out;
+    }
+    
+    .notification-content {
+      padding: 16px;
+      position: relative;
+      min-width: 280px;
+    }
+    
+    .notification-title {
+      font-weight: 600;
+      color: #856404;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .notification-message {
+      color: #856404;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    
+    .notification-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: #856404;
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .notification-close:hover {
+      background: rgba(133, 100, 4, 0.1);
+    }
+    
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
     
     .focus-stats {
@@ -298,6 +400,53 @@
     .add-site button:hover {
       background: #0056b3;
     }
+    
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: #e9ecef;
+      border-radius: 3px;
+      margin: 12px 0;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: #28a745;
+      transition: width 0.3s ease;
+    }
+    
+    .progress-fill.break {
+      background: #17a2b8;
+    }
+    
+    .progress-fill.focus {
+      background: #dc3545;
+    }
+    
+    .mode-indicator {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    
+    .mode-focus {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .mode-break {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+    
+    .mode-idle {
+      background: #e2e3e5;
+      color: #383d41;
+    }
   </style>
 </head>
 <body>
@@ -306,25 +455,35 @@
   <!-- Timer Section -->
   <div class="timer-section">
     <div class="timer-display">
+      <div class="mode-indicator mode-idle" id="mode-indicator">IDLE</div>
       <div class="timer-time" id="timer-display">25:00</div>
       <div class="timer-status" id="timer-status">Ready to focus</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
     </div>
     
     <!-- Custom Timer Settings -->
     <div class="timer-settings">
       <div class="setting-row">
-        <label for="custom-minutes">Minutes:</label>
+        <label for="custom-minutes">Focus (min):</label>
         <input type="number" id="custom-minutes" min="1" max="120" value="25" />
       </div>
       <div class="setting-row">
-        <label for="custom-seconds">Seconds:</label>
+        <label for="custom-seconds">Focus (sec):</label>
         <input type="number" id="custom-seconds" min="0" max="59" value="0" />
       </div>
-      <button class="timer-btn apply-btn" id="apply-btn">Apply</button>
+      <div class="setting-row">
+        <label for="break-minutes">Break (min):</label>
+        <input type="number" id="break-minutes" min="1" max="60" value="5" />
+      </div>
+      <button class="timer-btn apply-btn" id="apply-btn">Apply Settings</button>
     </div>
     
     <div class="timer-controls">
-      <button class="timer-btn start-btn" id="start-btn">Start</button>
+      <button class="timer-btn start-btn" id="start-btn">Start Focus</button>
+      <button class="timer-btn pause-btn" id="pause-btn" style="display: none;">Pause</button>
+      <button class="timer-btn resume-btn" id="resume-btn" style="display: none;">Resume</button>
       <button class="timer-btn stop-btn" id="stop-btn" style="display: none;">Stop</button>
       <button class="timer-btn cancel-btn" id="cancel-btn" style="display: none;">Cancel</button>
       <button class="timer-btn reset-btn" id="reset-btn">Reset</button>
