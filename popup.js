@@ -9,12 +9,19 @@ const defaultSites = [
 ];
 
 let blockedSites = [];
+let timerInterval = null;
+let focusSessionActive = false;
+let currentTime = 25 * 60; // 25 minutes in seconds
+let totalTime = 0;
+let sessionCount = 0;
 
 // Initialize popup
 document.addEventListener('DOMContentLoaded', async () => {
   await loadBlockedSites();
+  await loadFocusStats();
   renderSitesList();
   setupEventListeners();
+  updateTimerDisplay();
 });
 
 // Load blocked sites from storage
@@ -26,6 +33,134 @@ async function loadBlockedSites() {
     console.error('Error loading blocked sites:', error);
     blockedSites = [];
   }
+}
+
+// Load focus statistics from storage
+async function loadFocusStats() {
+  try {
+    const result = await chrome.storage.local.get(['focusStats']);
+    const stats = result.focusStats || {};
+    const today = new Date().toDateString();
+    
+    if (stats[today]) {
+      sessionCount = stats[today].sessions || 0;
+      totalTime = stats[today].totalTime || 0;
+    } else {
+      sessionCount = 0;
+      totalTime = 0;
+    }
+    
+    updateStatsDisplay();
+  } catch (error) {
+    console.error('Error loading focus stats:', error);
+  }
+}
+
+// Save focus statistics to storage
+async function saveFocusStats() {
+  try {
+    const today = new Date().toDateString();
+    const result = await chrome.storage.local.get(['focusStats']);
+    const stats = result.focusStats || {};
+    
+    stats[today] = {
+      sessions: sessionCount,
+      totalTime: totalTime,
+      lastUpdated: Date.now()
+    };
+    
+    await chrome.storage.local.set({ focusStats: stats });
+  } catch (error) {
+    console.error('Error saving focus stats:', error);
+  }
+}
+
+// Update statistics display
+function updateStatsDisplay() {
+  const sessionsElement = document.getElementById('today-sessions');
+  const timeElement = document.getElementById('today-time');
+  
+  if (sessionsElement) sessionsElement.textContent = sessionCount;
+  if (timeElement) timeElement.textContent = `${Math.floor(totalTime / 60)}m`;
+}
+
+// Timer functions
+function startTimer() {
+  if (focusSessionActive) return;
+  
+  focusSessionActive = true;
+  currentTime = 25 * 60; // Reset to 25 minutes
+  
+  // Send message to background to activate focus mode
+  chrome.runtime.sendMessage({ action: "activateFocusMode" });
+  
+  // Update UI
+  document.getElementById('start-btn').style.display = 'none';
+  document.getElementById('stop-btn').style.display = 'inline-block';
+  document.getElementById('timer-status').textContent = 'Focus session active';
+  
+  // Start countdown
+  timerInterval = setInterval(() => {
+    currentTime--;
+    updateTimerDisplay();
+    
+    if (currentTime <= 0) {
+      completeFocusSession();
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  if (!focusSessionActive) return;
+  
+  focusSessionActive = false;
+  clearInterval(timerInterval);
+  timerInterval = null;
+  
+  // Send message to background to deactivate focus mode
+  chrome.runtime.sendMessage({ action: "deactivateFocusMode" });
+  
+  // Update UI
+  document.getElementById('start-btn').style.display = 'inline-block';
+  document.getElementById('stop-btn').style.display = 'none';
+  document.getElementById('timer-status').textContent = 'Session paused';
+}
+
+function resetTimer() {
+  stopTimer();
+  currentTime = 25 * 60;
+  updateTimerDisplay();
+  document.getElementById('timer-status').textContent = 'Ready to focus';
+}
+
+function completeFocusSession() {
+  stopTimer();
+  
+  // Update statistics
+  sessionCount++;
+  totalTime += 25 * 60; // Add 25 minutes
+  updateStatsDisplay();
+  saveFocusStats();
+  
+  // Show completion message
+  document.getElementById('timer-status').textContent = 'Session completed! 🎉';
+  
+  // Reset after 3 seconds
+  setTimeout(() => {
+    document.getElementById('timer-status').textContent = 'Ready for next session';
+  }, 3000);
+  
+  // Send message to background to deactivate focus mode
+  chrome.runtime.sendMessage({ action: "deactivateFocusMode" });
+}
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(currentTime / 60);
+  const seconds = currentTime % 60;
+  const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  
+  const timerDisplay = document.getElementById('timer-display');
+  if (timerDisplay) timerDisplay.textContent = display;
 }
 
 // Save blocked sites to storage
@@ -116,6 +251,9 @@ async function toggleSite(domain) {
 function setupEventListeners() {
   const addSiteBtn = document.getElementById('add-site-btn');
   const newSiteInput = document.getElementById('new-site');
+  const startBtn = document.getElementById('start-btn');
+  const stopBtn = document.getElementById('stop-btn');
+  const resetBtn = document.getElementById('reset-btn');
   
   addSiteBtn.addEventListener('click', addCustomSite);
   newSiteInput.addEventListener('keypress', (e) => {
@@ -123,6 +261,10 @@ function setupEventListeners() {
       addCustomSite();
     }
   });
+  
+  startBtn.addEventListener('click', startTimer);
+  stopBtn.addEventListener('click', stopTimer);
+  resetBtn.addEventListener('click', resetTimer);
   
   // Add debug button
   addDebugButton();

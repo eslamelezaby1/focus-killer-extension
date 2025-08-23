@@ -43,6 +43,10 @@ async function testChromeAPI() {
   }
 }
 
+// Focus mode state
+let focusModeActive = false;
+let blockedSitesInFocus = [];
+
 // Initialize blocked sites from storage on extension load
 chrome.runtime.onStartup.addListener(async () => {
   console.log('Extension starting up...');
@@ -254,6 +258,63 @@ async function removeBlockingRule(domain) {
   }
 }
 
+// Activate focus mode - enable blocking for all blocked sites
+async function activateFocusMode() {
+  try {
+    console.log('Activating focus mode...');
+    focusModeActive = true;
+    
+    // Get current blocked sites
+    const result = await chrome.storage.local.get(['blockedSites']);
+    const blockedSites = result.blockedSites || [];
+    
+    // Store current blocked sites for focus mode
+    blockedSitesInFocus = [...blockedSites];
+    
+    // Ensure all blocked sites have active blocking rules
+    for (const domain of blockedSites) {
+      await addBlockingRule(domain);
+    }
+    
+    console.log(`Focus mode activated with ${blockedSites.length} sites blocked`);
+    
+    // Store focus mode state
+    await chrome.storage.local.set({ focusModeActive: true });
+    
+  } catch (error) {
+    console.error('Error activating focus mode:', error);
+  }
+}
+
+// Deactivate focus mode - remove all blocking rules
+async function deactivateFocusMode() {
+  try {
+    console.log('Deactivating focus mode...');
+    focusModeActive = false;
+    
+    // Remove all blocking rules
+    const rules = await chrome.declarativeNetRequest.getDynamicRules();
+    if (rules.length > 0) {
+      const ruleIds = rules.map(rule => rule.id);
+      await chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: ruleIds
+      });
+      console.log(`Removed ${ruleIds.length} blocking rules`);
+    }
+    
+    // Clear rule IDs from storage
+    await chrome.storage.local.set({ ruleIds: {} });
+    
+    // Clear focus mode state
+    await chrome.storage.local.set({ focusModeActive: false });
+    
+    console.log('Focus mode deactivated');
+    
+  } catch (error) {
+    console.error('Error deactivating focus mode:', error);
+  }
+}
+
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('Received message:', message);
@@ -279,6 +340,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.action === "testBlockingAPI") {
     testChromeAPI().then((success) => {
       sendResponse({ success: success });
+    }).catch((error) => {
+      sendResponse({ success: false, error: error.message });
+    });
+    return true; // Keep message channel open for async response
+  } else if (message.action === "activateFocusMode") {
+    activateFocusMode().then(() => {
+      sendResponse({ success: true });
+    }).catch((error) => {
+      sendResponse({ success: false, error: error.message });
+    });
+    return true; // Keep message channel open for async response
+  } else if (message.action === "deactivateFocusMode") {
+    deactivateFocusMode().then(() => {
+      sendResponse({ success: true });
     }).catch((error) => {
       sendResponse({ success: false, error: error.message });
     });

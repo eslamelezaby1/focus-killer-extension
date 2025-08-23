@@ -5,7 +5,7 @@
   <style>
     body { 
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-      width: 300px; 
+      width: 350px; 
       padding: 16px; 
       margin: 0;
       background: #f8f9fa;
@@ -16,6 +16,118 @@
       color: #2c3e50; 
       text-align: center;
       font-size: 18px;
+    }
+    
+    .timer-section {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 1px solid #e9ecef;
+    }
+    
+    .timer-display {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    
+    .timer-time {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #28a745;
+      margin-bottom: 8px;
+    }
+    
+    .timer-status {
+      font-size: 14px;
+      color: #6c757d;
+      margin-bottom: 16px;
+    }
+    
+    .timer-controls {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    
+    .timer-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .start-btn {
+      background: #28a745;
+      color: white;
+    }
+    
+    .start-btn:hover {
+      background: #218838;
+    }
+    
+    .stop-btn {
+      background: #dc3545;
+      color: white;
+    }
+    
+    .stop-btn:hover {
+      background: #c82333;
+    }
+    
+    .reset-btn {
+      background: #6c757d;
+      color: white;
+    }
+    
+    .reset-btn:hover {
+      background: #5a6268;
+    }
+    
+    .focus-stats {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 1px solid #e9ecef;
+    }
+    
+    .stats-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    
+    .stat-item {
+      text-align: center;
+      padding: 8px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #28a745;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 4px;
     }
     
     .site-item {
@@ -139,6 +251,34 @@
 </head>
 <body>
   <h3>Focus Killer</h3>
+  
+  <!-- Timer Section -->
+  <div class="timer-section">
+    <div class="timer-display">
+      <div class="timer-time" id="timer-display">25:00</div>
+      <div class="timer-status" id="timer-status">Ready to focus</div>
+    </div>
+    <div class="timer-controls">
+      <button class="timer-btn start-btn" id="start-btn">Start</button>
+      <button class="timer-btn stop-btn" id="stop-btn" style="display: none;">Stop</button>
+      <button class="timer-btn reset-btn" id="reset-btn">Reset</button>
+    </div>
+  </div>
+  
+  <!-- Focus Statistics -->
+  <div class="focus-stats">
+    <div class="stats-title">Today's Focus</div>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-value" id="today-sessions">0</div>
+        <div class="stat-label">Sessions</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="today-time">0m</div>
+        <div class="stat-label">Total Time</div>
+      </div>
+    </div>
+  </div>
   
   <div id="sites-list">
     <!-- Sites will be populated by JavaScript -->
